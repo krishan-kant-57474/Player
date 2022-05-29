@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="player.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="main_div" id="colorbg">
+      <div class="music_container" id="color">
+        <h2 id="title">LOTUS LANe</h2>
+        <h3 id="artist">The Layalist</h3>
+        <div class="img_container">
+          <img src="image/k1.jpg" alt="" />
+        </div>
+        <audio src="audio/k1.mp3"></audio>
+        <!-- controls -->
+        <div class="music_controls">
+          <i class="fas fa-backward" id="prev" title="previous"></i>
+          <i class="fas fa-play main-button" id="play" title="play"></i>
+          <i class="fas fa-forward" id="next" title="next"></i>
+        </div>
+      </div>
+    </div>
+    <script>
+      const play = document.getElementById("play");
+      const music = document.querySelector("audio");
+      const img = document.querySelector("img");
+      const title = document.getElementById("title");
+      const artist = document.getElementById("artist");
+      const prev = document.getElementById("prev");
+      const next = document.getElementById("next");
+      const color = document.getElementById("color");
+      const colorbg = document.getElementById("colorbg");
+
+      const songs = [
+        {
+          name: "k1",
+          title: "Lotus Lane",
+          artist: "loyalist",
+        },
+        {
+          name: "k2",
+          title: "Sappheiros",
+          artist: "Aurora",
+        },
+        {
+          name: "k6",
+          title: "bhakti",
+          artist: "Krishan",
+        }
+      ];
+
+      let isplaying = false;
+
+      const playmusic = () => {
+        isplaying = true;
+        music.play();
+        play.classList.replace("fa-play", "fa-pause");
+        img.classList.add("anime");
+      };
+
+      const pauseMusic = () => {
+        isplaying = false;
+        music.pause();
+        play.classList.replace("fa-pause", "fa-play");
+        img.classList.remove("anime");
+      };
+
+      play.addEventListener("click", () => {
+        //it is first thing and also responsible for music play
+        // if (isplaying) {
+        //   pauseMusic();
+        // } else {
+        //   playmusic();
+        // }
+        isplaying ? pauseMusic() : playmusic();
+      });
+
+      function getRandomColor() {
+        var letters = "0123456789ABCDEF";
+        var color = "#";
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+
+      // const setBg = () => {
+      //   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+      //   return "#" + randomColor;
+      // };
+
+      // changing the music
+      const loadSong = (songs) => {
+        title.textContent = songs.title;
+        artist.textContent = songs.artist;
+        img.src = "image/" + songs.name + ".jpg";
+        music.src = "audio/" + songs.name + ".mp3";
+        var samecolor = getRandomColor();
+        color.style.backgroundImage = `linear-gradient(to right,${samecolor},${getRandomColor()})`;
+        colorbg.style.background = `${samecolor}`;
+      };
+      songIndex = 0;
+
+      const nextSong = () => {
+        songIndex = (songIndex + 1) % songs.length;
+        loadSong(songs[songIndex]);
+        playmusic();
+
+        // songIndex++;
+        // if(songIndex===songs.length){
+        // songIndex=0; }
+      };
+
+      const prevSong = () => {
+        songIndex = (songIndex - 1 + songs.length) % songs.length;
+        loadSong(songs[songIndex]);
+        playmusic();
+
+        // songIndex--;
+        // if (songIndex < 0) {
+        //   songIndex = songs.length - 1;
+        // }
+      };
+      next.addEventListener("click", nextSong);
+      prev.addEventListener("click", prevSong);
+    </script>
+  </body>
+</html>
